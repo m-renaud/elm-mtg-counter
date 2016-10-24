@@ -53,15 +53,22 @@ update msg model =
 
 
         -- Starting player messages.
+        SelectStartingPlayerClick ->
+            msgBatch
+                -- The update function.
+                update
+
+                -- Messages to batch.
+                [ Layout.toggleDrawer Mdl
+                , SelectStartingPlayer
+                ]
+
+                -- Initial model.
+                model
+
+
         SelectStartingPlayer ->
-            let
-                (toggleDrawerModel, toggleDrawerCmd) =
-                    update (Layout.toggleDrawer Mdl) model
-                randomNumCmd = Random.generate ShowStartingPlayer (Random.int 1 2)
-
-            in
-                (toggleDrawerModel, Cmd.batch [randomNumCmd, toggleDrawerCmd])
-
+            (model, Random.generate ShowStartingPlayer (Random.int 1 2))
 
         ShowStartingPlayer player ->
             { model | startingPlayer = Just player } ! []
@@ -76,3 +83,20 @@ update msg model =
 
         Mdl msg' ->
             Material.update msg' model
+
+
+-- Handle each of the passed 'msgs' from left to right.
+msgBatch : (Msg -> Model -> (Model, Cmd Msg)) -> List Msg -> Model -> (Model, Cmd Msg)
+msgBatch updateFunc msgs model =
+    let
+        updateModelAndCmds : Msg -> (Model, List (Cmd Msg)) -> (Model, List (Cmd Msg))
+        updateModelAndCmds msg (model, cmds) =
+            let
+                (updatedModel, newCmd) =
+                    updateFunc msg model
+            in
+                (updatedModel, newCmd::cmds)
+
+        (updatedModel, cmdList) = List.foldl updateModelAndCmds (model, []) msgs
+    in
+        (updatedModel, Cmd.batch cmdList)

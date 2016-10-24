@@ -24,6 +24,7 @@ type Msg
     | Reset
 
     -- Messages for randomly selecting the starting player.
+    | SelectStartingPlayerClick
     | SelectStartingPlayer
     | ShowStartingPlayer Int
     | HideStartingPlayerCard

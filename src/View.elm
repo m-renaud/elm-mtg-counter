@@ -58,7 +58,7 @@ drawer =
         []
         [ Layout.link
               [ Layout.href "#"
-              , Layout.onClick <| SelectStartingPlayer
+              , Layout.onClick <| SelectStartingPlayerClick
               ]
               [ text "Pick starting player" ]
         ]
