@@ -33,6 +33,7 @@ view model =
                         [ css "text-align" "center"
                         ]
                         [ startingPlayerCard model.startingPlayer
+                        , if model.confirmResetGame then resetCard model.mdl else Options.div [] []
                         , viewBodyGrid model
                         ]
                   , resetButton model
@@ -77,6 +78,70 @@ resetButton model =
         ]
     [ text "Reset"
     , Icon.view "replay" [ Icon.size24 ] ]
+
+
+
+-- The style for a floating action card. The passed 'msg' is the Msg sent when
+-- the card is clicked.
+floatingCardStyle : Msg -> List (Style Msg)
+floatingCardStyle msg =
+    [ Color.background Color.white
+    , Options.attribute <| Html.Events.onClick msg
+    , Elevation.e8
+    , css "width" "60%"
+    , css "margin-left" "20%"
+    , css "z-index" "2"
+    , css "position" "absolute"
+    , css "top" "25%"
+    ]
+
+
+
+floatingCardTitle : String -> Card.Block msg
+floatingCardTitle titleText =
+    Card.title [ css "display" "flex"
+               , css "flex-direction" "row"
+               , css "justify-content" "space-between"
+               , Color.background Color.accent
+               , Color.text Color.white
+               ]
+        [ text titleText
+        , Icon.i "clear"
+        ]
+
+
+floatingCardActions : List (Html msg) -> Card.Block msg
+floatingCardActions actions =
+    Card.actions
+        [ Options.center
+        , Card.border
+        ]
+        actions
+
+resetCard : Material.Model -> Html Msg
+resetCard mdlModel =
+    Card.view
+        (floatingCardStyle CancelReset)
+        [ floatingCardTitle "Reset game?"
+        , floatingCardActions
+              [ Button.render Mdl [0] mdlModel
+                    [ Button.onClick CancelReset
+                    , Button.raised
+                    , css "padding" "0px"
+                    , css "margin" "5% 5% 5% 5%"
+                    ]
+                    [ text "Cancel" ]
+              , Button.render Mdl [1] mdlModel
+                    [ Button.onClick ConfirmReset
+                    , Button.raised
+                    , Button.accent
+                    , css "padding" "0px"
+                    , css "margin" "5% 5% 5% 5%"
+                    ]
+                    [ text "Reset" ]
+              ]
+        ]
+
 
 
 -- The card showing which player should go first.

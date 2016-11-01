@@ -16,6 +16,7 @@ init =
             { player1 = Player.init "Player 1" 20
             , player2 = Player.init "Player 2" 20
             , startingPlayer = Nothing
+            , confirmResetGame = False
             , mdl = Material.model
             , selectedTab = 0
             }
@@ -45,8 +46,20 @@ update msg model =
 
         -- Reset the game.
         Reset ->
+            ( { model | confirmResetGame = True
+              }
+            , Cmd.none
+            )
+
+        CancelReset ->
+            ( { model | confirmResetGame = False }
+            , Cmd.none
+            )
+
+        ConfirmReset ->
             ( { model | player1 = Player.setLifeTotal 20 model.player1
                       , player2 = Player.setLifeTotal 20 model.player2
+                      , confirmResetGame = False
               }
             , Cmd.none
             )

@@ -9,6 +9,7 @@ type alias Model =
     { player1 : Player.Model
     , player2 : Player.Model
     , startingPlayer : Maybe Int
+    , confirmResetGame : Bool
     , mdl : Material.Model
     , selectedTab : Int
     }
@@ -22,6 +23,8 @@ type Msg
 
     -- Reset the game state (player1 and player2 models)
     | Reset
+    | ConfirmReset
+    | CancelReset
 
     -- Messages for randomly selecting the starting player.
     | SelectStartingPlayerClick
