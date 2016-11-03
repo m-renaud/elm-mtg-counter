@@ -18,7 +18,6 @@ init =
             , startingPlayer = Nothing
             , confirmResetGame = False
             , mdl = Material.model
-            , selectedTab = 0
             }
     in
         model ! []
@@ -101,9 +100,6 @@ update msg model =
 
 
         -- Elm MDL messages.
-        SelectTab num ->
-            { model | selectedTab = num } ! []
-
         Mdl msg' ->
             Material.update msg' model
 

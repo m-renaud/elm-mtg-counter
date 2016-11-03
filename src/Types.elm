@@ -11,7 +11,6 @@ type alias Model =
     , startingPlayer : Maybe String
     , confirmResetGame : Bool
     , mdl : Material.Model
-    , selectedTab : Int
     }
 
 
@@ -33,5 +32,4 @@ type Msg
     | HideStartingPlayerCard
 
     -- Elm MDL message.
-    | SelectTab Int
     | Mdl (Material.Msg Msg)

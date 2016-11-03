@@ -22,8 +22,6 @@ view model =
     Layout.render Mdl
             model.mdl
             [ Layout.fixedHeader
-            , Layout.selectedTab model.selectedTab
-            , Layout.onSelectTab SelectTab
             ]
             { header = header model
             , drawer = drawer
