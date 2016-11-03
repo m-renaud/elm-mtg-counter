@@ -211,10 +211,10 @@ viewBodyGrid model =
             -- Content
             [ Grid.grid [ Grid.noSpacing ]
                   [ Grid.cell cellStyle
-                        [ Player.view model.player1 |> Html.App.map Player1Msg
+                        [ Player.view "1" model.player1 |> Html.App.map Player1Msg
                         ]
                   , Grid.cell cellStyle
-                        [ Player.view model.player2 |> Html.App.map Player2Msg
+                        [ Player.view "2" model.player2 |> Html.App.map Player2Msg
                         ]
                   ]
             ]
