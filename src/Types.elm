@@ -8,7 +8,7 @@ import Player
 type alias Model =
     { player1 : Player.Model
     , player2 : Player.Model
-    , startingPlayer : Maybe Int
+    , startingPlayer : Maybe String
     , confirmResetGame : Bool
     , mdl : Material.Model
     , selectedTab : Int

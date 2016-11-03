@@ -84,7 +84,17 @@ update msg model =
             (model, Random.generate ShowStartingPlayer (Random.int 1 2))
 
         ShowStartingPlayer player ->
-            { model | startingPlayer = Just player } ! []
+            let
+                startingPlayerName =
+                    if
+                        player == 1
+                    then
+                        model.player1.name
+                    else
+                        model.player2.name
+
+            in
+                { model | startingPlayer = Just startingPlayerName } ! []
 
         HideStartingPlayerCard ->
             { model | startingPlayer = Nothing } ! []

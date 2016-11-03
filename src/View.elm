@@ -145,10 +145,10 @@ resetCard mdlModel =
 
 
 -- The card showing which player should go first.
-startingPlayerCard : Maybe Int -> Html Msg
-startingPlayerCard startingPlayer =
-    case startingPlayer of
-        Just player ->
+startingPlayerCard : Maybe String -> Html Msg
+startingPlayerCard maybeStartingPlayer =
+    case maybeStartingPlayer of
+        Just startingPlayer ->
             Card.view
                 [ Color.background Color.white
                 , Options.attribute <| Html.Events.onClick HideStartingPlayerCard
@@ -166,7 +166,7 @@ startingPlayerCard startingPlayer =
                   [ text "Starting player"
                   , Icon.i "clear"
                   ]
-            , Card.text [] [ text <| if player == 1 then "Player 1" else "Player 2" ]
+            , Card.text [] [ text startingPlayer ]
             ]
 
         Nothing ->
