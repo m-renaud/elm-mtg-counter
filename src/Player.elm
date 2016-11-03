@@ -8,7 +8,7 @@ import Material.Button as Button
 import Material.Card as Card
 import Material.Color as Color
 import Material.Elevation as Elevation
-import Material.Options as Options exposing (css)
+import Material.Options as Options exposing (Style, css)
 import Material.Typography as Typography
 
 
@@ -37,6 +37,7 @@ setLifeTotal life model =
 
 -- UPDATE
 
+
 type Msg
     = IncreaseLife
     | DecreaseLife
@@ -59,10 +60,7 @@ update msg model =
 -- VIEW
 
 
-type alias Mdl =
-    Material.Model
-
-
+-- Background color goes from green->orange->red->black as life decreases.
 backgroundColorFromLifeTotal : Int -> Color.Color
 backgroundColorFromLifeTotal lifeTotal =
     if lifeTotal >= 15 then
@@ -79,6 +77,7 @@ backgroundColorFromLifeTotal lifeTotal =
         Color.black
 
 
+-- Text color is white when life > 0, and red when <= 0.
 textColorFromLifeTotal : Int -> Color.Color
 textColorFromLifeTotal lifeTotal =
     if lifeTotal > 0 then
@@ -87,38 +86,63 @@ textColorFromLifeTotal lifeTotal =
         Color.color Color.Red Color.S600
 
 
+-- The style for a player card.
+cardStyle : Color.Color -> List (Style Msg)
+cardStyle backgroundColor =
+    [ Color.background backgroundColor
+    , Elevation.e2
+    , css "width" "100%"
+    , css "height" "100%"
+    ]
+
+
+cardTitle : String -> Card.Block msg
+cardTitle playerName =
+    Card.title
+        [ Color.text Color.white
+        , css "font-size" "24px"
+        ]
+
+        [ text playerName ]
+
+
+cardText : Int -> Card.Block msg
+cardText lifeTotal =
+    Card.text
+        [ Typography.center
+        , css "font-size" "60px"
+        , Color.text <| textColorFromLifeTotal lifeTotal
+        ]
+
+        [ text <| toString lifeTotal ]
+
+
+cardActions : Material.Model -> Card.Block Msg
+cardActions mdlModel =
+    Card.actions
+        [ Options.center
+        , css "padding-left" "8px"
+        , css "padding-top" "4px"
+        ]
+
+        [ Button.render Mdl [1] mdlModel
+              [ Button.onClick DecreaseLife
+              , Button.fab
+              ]
+              [ text "-" ]
+        , Button.render Mdl [0] mdlModel
+              [ Button.onClick IncreaseLife
+              , Button.fab
+              ]
+              [ text "+" ]
+        ]
+
+
 view : Model -> Html Msg
 view model =
     Card.view
-        [ Color.background <| backgroundColorFromLifeTotal model.lifeTotal
-        , Elevation.e2
-        , css "width" "100%"
-        , css "height" "100%"
-        ]
-        [ Card.title [ Color.text Color.white
-                     , css "font-size" "24px"
-                     ]
-              [ text model.name ]
-        , Card.text
-              [ Typography.center
-              , css "font-size" "60px"
-              , Color.text <| textColorFromLifeTotal model.lifeTotal
-              ]
-              [ text (toString model.lifeTotal) ]
-        , Card.actions
-              [ Options.center
-              , css "padding-left" "8px"
-              , css "padding-top" "4px"
-              ]
-              [ Button.render Mdl [1] model.mdl
-                    [ Button.onClick DecreaseLife
-                    , Button.fab
-                    ]
-                    [ text "-" ]
-              , Button.render Mdl [0] model.mdl
-                    [ Button.onClick IncreaseLife
-                    , Button.fab
-                    ]
-                    [ text "+" ]
-              ]
+        (cardStyle <| backgroundColorFromLifeTotal model.lifeTotal)
+        [ cardTitle model.name
+        , cardText model.lifeTotal
+        , cardActions model.mdl
         ]
