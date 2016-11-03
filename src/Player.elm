@@ -15,14 +15,17 @@ import Material.Typography as Typography
 -- MODEL
 
 
+type alias PlayerName = String
+
+
 type alias Model =
-    { name : String
+    { name : PlayerName
     , lifeTotal : Int
     , mdl : Material.Model
     }
 
 
-init : String -> Int -> Model
+init : PlayerName -> Int -> Model
 init playerName initialLife =
     { name = playerName
     , lifeTotal = initialLife
@@ -96,7 +99,7 @@ cardStyle backgroundColor =
     ]
 
 
-cardTitle : String -> Card.Block msg
+cardTitle : PlayerName -> Card.Block msg
 cardTitle playerName =
     Card.title
         [ Color.text Color.white
