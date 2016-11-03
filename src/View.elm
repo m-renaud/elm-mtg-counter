@@ -61,7 +61,7 @@ drawer =
               [ Layout.href "#"
               , Layout.onClick <| SelectStartingPlayerClick
               ]
-              [ text "Pick starting player" ]
+              [ text "Randomly pick starting player" ]
         ]
     ]
 
