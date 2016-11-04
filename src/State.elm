@@ -9,14 +9,17 @@ import Types exposing (Model, Msg(..))
 import Player
 
 
-init : (Model, Cmd Msg)
-init =
+init : Int -> (Model, Cmd Msg)
+init initialStartingLife =
     let
         model =
-            { player1 = Player.init "Player 1" 20
-            , player2 = Player.init "Player 2" 20
+            { player1 = Player.init "Player 1" initialStartingLife
+            , player2 = Player.init "Player 2" initialStartingLife
             , startingPlayer = Nothing
             , confirmResetGame = False
+            , gameSettings =
+                  { startingLife = initialStartingLife
+                  }
             , mdl = Material.model
             }
     in
@@ -56,8 +59,8 @@ update msg model =
             )
 
         ConfirmReset ->
-            ( { model | player1 = Player.setLifeTotal 20 model.player1
-                      , player2 = Player.setLifeTotal 20 model.player2
+            ( { model | player1 = Player.setLifeTotal model.gameSettings.startingLife model.player1
+                      , player2 = Player.setLifeTotal model.gameSettings.startingLife model.player2
                       , confirmResetGame = False
               }
             , Cmd.none

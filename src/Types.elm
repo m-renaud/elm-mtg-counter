@@ -10,7 +10,13 @@ type alias Model =
     , player2 : Player.Model
     , startingPlayer : Maybe String
     , confirmResetGame : Bool
+    , gameSettings : Settings
     , mdl : Material.Model
+    }
+
+
+type alias Settings =
+    { startingLife : Int
     }
 
 
