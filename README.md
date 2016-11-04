@@ -1,4 +1,4 @@
-# Magic the Gathering Counter - [Demo](http://mrenaud.ca/sites/mtg)
+# Magic the Gathering Counter - [Demo](http://mtg.mrenaud.ca)
 
 A simple MTG counter written in Elm. Supports tracking the life total
 of two players, and randomly selecting a starting player from the
