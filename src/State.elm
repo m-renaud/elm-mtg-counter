@@ -19,6 +19,7 @@ init initialStartingLife =
             , confirmResetGame = False
             , gameSettings =
                   { startingLife = initialStartingLife
+                  , changeCardColors = True
                   }
             , mdl = Material.model
             }
@@ -100,6 +101,17 @@ update msg model =
 
         HideStartingPlayerCard ->
             { model | startingPlayer = Nothing } ! []
+
+
+        -- Game settings.
+        ToggleChangeCardColorsSetting ->
+            let oldGameSettings =
+                    model.gameSettings
+                newGameSettings =
+                    { oldGameSettings | changeCardColors =
+                          not oldGameSettings.changeCardColors }
+            in
+                { model | gameSettings = newGameSettings } ! []
 
 
         -- Elm MDL messages.

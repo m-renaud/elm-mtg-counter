@@ -12,6 +12,7 @@ import Material.Grid as Grid
 import Material.Icon as Icon
 import Material.Layout as Layout
 import Material.Options as Options exposing (Style, css)
+import Material.Toggles as Toggles
 
 import Types exposing (Model, Msg(..))
 
@@ -24,7 +25,7 @@ view model =
             [ Layout.fixedHeader
             ]
             { header = header model
-            , drawer = drawer
+            , drawer = drawer model.gameSettings.changeCardColors model.mdl
             , tabs = ([], [])
             , main =
                   [ Options.div
@@ -50,8 +51,8 @@ header model =
     ]
 
 
-drawer : List (Html Msg)
-drawer =
+drawer : Bool -> Material.Model -> List (Html Msg)
+drawer changeCardColors mdlModel =
     [ Layout.title [] [ text "Game Options" ]
     , Layout.navigation
         []
@@ -61,6 +62,14 @@ drawer =
               ]
               [ text "Randomly pick starting player" ]
         ]
+    , Layout.title [] [ text "Settings" ]
+    , Toggles.switch Mdl [0] mdlModel
+          [ Toggles.onClick ToggleChangeCardColorsSetting
+          , Toggles.ripple
+          , Toggles.value changeCardColors
+          , css "margin-left" "5px"
+          ]
+          [ text "Color changing cards" ]
     ]
 
 
@@ -201,6 +210,9 @@ viewBodyGrid model =
             , css "padding-top" "4px"
             ]
 
+        changeCardColors =
+            model.gameSettings.changeCardColors
+
     in
         Options.div
             -- Styling
@@ -209,10 +221,12 @@ viewBodyGrid model =
             -- Content
             [ Grid.grid [ Grid.noSpacing ]
                   [ Grid.cell cellStyle
-                        [ Player.view "1" model.player1 |> Html.App.map Player1Msg
+                        [ Player.view changeCardColors "1" model.player1
+                              |> Html.App.map Player1Msg
                         ]
                   , Grid.cell cellStyle
-                        [ Player.view "2" model.player2 |> Html.App.map Player2Msg
+                        [ Player.view changeCardColors "2" model.player2
+                              |> Html.App.map Player2Msg
                         ]
                   ]
             ]

@@ -99,9 +99,10 @@ update msg model =
 
 
 -- Background color goes from green->orange->red->black as life decreases.
-backgroundColorFromLifeTotal : Int -> Color.Color
-backgroundColorFromLifeTotal lifeTotal =
-    if lifeTotal >= 15 then
+-- Stays green if changeCardColor is False.
+backgroundColorFromLifeTotal : Bool -> Int -> Color.Color
+backgroundColorFromLifeTotal changeCardColor lifeTotal =
+    if (not changeCardColor) || lifeTotal >= 15 then
         Color.color Color.Green Color.S600
     else if lifeTotal >= 10 then
         Color.color Color.Yellow Color.S800
@@ -116,9 +117,9 @@ backgroundColorFromLifeTotal lifeTotal =
 
 
 -- Text color is white when life > 0, and red when <= 0.
-textColorFromLifeTotal : Int -> Color.Color
-textColorFromLifeTotal lifeTotal =
-    if lifeTotal > 0 then
+textColorFromLifeTotal : Bool -> Int -> Color.Color
+textColorFromLifeTotal changeCardColor lifeTotal =
+    if (not changeCardColor) || lifeTotal > 0 then
         Color.white
     else
         Color.color Color.Red Color.S600
@@ -159,12 +160,12 @@ cardTitle playerName domIdSuffix mdlModel =
         ]
 
 
-cardText : Int -> Card.Block msg
-cardText lifeTotal =
+cardText : Bool -> Int -> Card.Block msg
+cardText changeCardColor lifeTotal =
     Card.text
         [ Typography.center
         , css "font-size" "60px"
-        , Color.text <| textColorFromLifeTotal lifeTotal
+        , Color.text <| textColorFromLifeTotal changeCardColor lifeTotal
         ]
 
         [ text <| toString lifeTotal ]
@@ -191,12 +192,12 @@ cardActions mdlModel =
         ]
 
 
-view : DomIdPiece -> Model -> Html Msg
-view domIdSuffix model =
+view : Bool -> DomIdPiece -> Model -> Html Msg
+view changeCardColor domIdSuffix model =
     Card.view
-        (cardStyle <| backgroundColorFromLifeTotal model.lifeTotal)
+        (cardStyle <| backgroundColorFromLifeTotal changeCardColor model.lifeTotal)
         [ cardTitle model.name domIdSuffix model.mdl
-        , cardText model.lifeTotal
+        , cardText changeCardColor model.lifeTotal
         , cardActions model.mdl
         ]
 

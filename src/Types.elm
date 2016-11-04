@@ -17,6 +17,7 @@ type alias Model =
 
 type alias Settings =
     { startingLife : Int
+    , changeCardColors : Bool
     }
 
 
@@ -36,6 +37,9 @@ type Msg
     | SelectStartingPlayer
     | ShowStartingPlayer Int
     | HideStartingPlayerCard
+
+    -- Game settings.
+    | ToggleChangeCardColorsSetting
 
     -- Elm MDL message.
     | Mdl (Material.Msg Msg)
