@@ -14340,28 +14340,31 @@ var _m_renaud$mtg_counter$Player$cardStyle = function (backgroundColor) {
 			A2(_debois$elm_mdl$Material_Options$css, 'height', '100%')
 		]);
 };
-var _m_renaud$mtg_counter$Player$textColorFromLifeTotal = function (lifeTotal) {
-	return (_elm_lang$core$Native_Utils.cmp(lifeTotal, 0) > 0) ? _debois$elm_mdl$Material_Color$white : A2(_debois$elm_mdl$Material_Color$color, _debois$elm_mdl$Material_Color$Red, _debois$elm_mdl$Material_Color$S600);
-};
-var _m_renaud$mtg_counter$Player$cardText = function (lifeTotal) {
-	return A2(
-		_debois$elm_mdl$Material_Card$text,
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_debois$elm_mdl$Material_Typography$center,
-				A2(_debois$elm_mdl$Material_Options$css, 'font-size', '60px'),
-				_debois$elm_mdl$Material_Color$text(
-				_m_renaud$mtg_counter$Player$textColorFromLifeTotal(lifeTotal))
-			]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html$text(
-				_elm_lang$core$Basics$toString(lifeTotal))
-			]));
-};
-var _m_renaud$mtg_counter$Player$backgroundColorFromLifeTotal = function (lifeTotal) {
-	return (_elm_lang$core$Native_Utils.cmp(lifeTotal, 15) > -1) ? A2(_debois$elm_mdl$Material_Color$color, _debois$elm_mdl$Material_Color$Green, _debois$elm_mdl$Material_Color$S600) : ((_elm_lang$core$Native_Utils.cmp(lifeTotal, 10) > -1) ? A2(_debois$elm_mdl$Material_Color$color, _debois$elm_mdl$Material_Color$Yellow, _debois$elm_mdl$Material_Color$S800) : ((_elm_lang$core$Native_Utils.cmp(lifeTotal, 5) > -1) ? A2(_debois$elm_mdl$Material_Color$color, _debois$elm_mdl$Material_Color$Orange, _debois$elm_mdl$Material_Color$S800) : ((_elm_lang$core$Native_Utils.cmp(lifeTotal, 3) > -1) ? A2(_debois$elm_mdl$Material_Color$color, _debois$elm_mdl$Material_Color$Red, _debois$elm_mdl$Material_Color$S600) : ((_elm_lang$core$Native_Utils.cmp(lifeTotal, 0) > 0) ? A2(_debois$elm_mdl$Material_Color$color, _debois$elm_mdl$Material_Color$Red, _debois$elm_mdl$Material_Color$S900) : _debois$elm_mdl$Material_Color$black))));
-};
+var _m_renaud$mtg_counter$Player$textColorFromLifeTotal = F2(
+	function (changeCardColor, lifeTotal) {
+		return (_elm_lang$core$Basics$not(changeCardColor) || (_elm_lang$core$Native_Utils.cmp(lifeTotal, 0) > 0)) ? _debois$elm_mdl$Material_Color$white : A2(_debois$elm_mdl$Material_Color$color, _debois$elm_mdl$Material_Color$Red, _debois$elm_mdl$Material_Color$S600);
+	});
+var _m_renaud$mtg_counter$Player$cardText = F2(
+	function (changeCardColor, lifeTotal) {
+		return A2(
+			_debois$elm_mdl$Material_Card$text,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_debois$elm_mdl$Material_Typography$center,
+					A2(_debois$elm_mdl$Material_Options$css, 'font-size', '60px'),
+					_debois$elm_mdl$Material_Color$text(
+					A2(_m_renaud$mtg_counter$Player$textColorFromLifeTotal, changeCardColor, lifeTotal))
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text(
+					_elm_lang$core$Basics$toString(lifeTotal))
+				]));
+	});
+var _m_renaud$mtg_counter$Player$backgroundColorFromLifeTotal = F2(
+	function (changeCardColor, lifeTotal) {
+		return (_elm_lang$core$Basics$not(changeCardColor) || (_elm_lang$core$Native_Utils.cmp(lifeTotal, 15) > -1)) ? A2(_debois$elm_mdl$Material_Color$color, _debois$elm_mdl$Material_Color$Green, _debois$elm_mdl$Material_Color$S600) : ((_elm_lang$core$Native_Utils.cmp(lifeTotal, 10) > -1) ? A2(_debois$elm_mdl$Material_Color$color, _debois$elm_mdl$Material_Color$Yellow, _debois$elm_mdl$Material_Color$S800) : ((_elm_lang$core$Native_Utils.cmp(lifeTotal, 5) > -1) ? A2(_debois$elm_mdl$Material_Color$color, _debois$elm_mdl$Material_Color$Orange, _debois$elm_mdl$Material_Color$S800) : ((_elm_lang$core$Native_Utils.cmp(lifeTotal, 3) > -1) ? A2(_debois$elm_mdl$Material_Color$color, _debois$elm_mdl$Material_Color$Red, _debois$elm_mdl$Material_Color$S600) : ((_elm_lang$core$Native_Utils.cmp(lifeTotal, 0) > 0) ? A2(_debois$elm_mdl$Material_Color$color, _debois$elm_mdl$Material_Color$Red, _debois$elm_mdl$Material_Color$S900) : _debois$elm_mdl$Material_Color$black))));
+	});
 var _m_renaud$mtg_counter$Player$setLifeTotal = F2(
 	function (life, model) {
 		return _elm_lang$core$Native_Utils.update(
@@ -14473,16 +14476,16 @@ var _m_renaud$mtg_counter$Player$cardActions = function (mdlModel) {
 					]))
 			]));
 };
-var _m_renaud$mtg_counter$Player$view = F2(
-	function (domIdSuffix, model) {
+var _m_renaud$mtg_counter$Player$view = F3(
+	function (changeCardColor, domIdSuffix, model) {
 		return A2(
 			_debois$elm_mdl$Material_Card$view,
 			_m_renaud$mtg_counter$Player$cardStyle(
-				_m_renaud$mtg_counter$Player$backgroundColorFromLifeTotal(model.lifeTotal)),
+				A2(_m_renaud$mtg_counter$Player$backgroundColorFromLifeTotal, changeCardColor, model.lifeTotal)),
 			_elm_lang$core$Native_List.fromArray(
 				[
 					A3(_m_renaud$mtg_counter$Player$cardTitle, model.name, domIdSuffix, model.mdl),
-					_m_renaud$mtg_counter$Player$cardText(model.lifeTotal),
+					A2(_m_renaud$mtg_counter$Player$cardText, changeCardColor, model.lifeTotal),
 					_m_renaud$mtg_counter$Player$cardActions(model.mdl)
 				]));
 	});
@@ -14553,12 +14556,14 @@ var _m_renaud$mtg_counter$Types$Model = F6(
 	function (a, b, c, d, e, f) {
 		return {player1: a, player2: b, startingPlayer: c, confirmResetGame: d, gameSettings: e, mdl: f};
 	});
-var _m_renaud$mtg_counter$Types$Settings = function (a) {
-	return {startingLife: a};
-};
+var _m_renaud$mtg_counter$Types$Settings = F2(
+	function (a, b) {
+		return {startingLife: a, changeCardColors: b};
+	});
 var _m_renaud$mtg_counter$Types$Mdl = function (a) {
 	return {ctor: 'Mdl', _0: a};
 };
+var _m_renaud$mtg_counter$Types$ToggleChangeCardColorsSetting = {ctor: 'ToggleChangeCardColorsSetting'};
 var _m_renaud$mtg_counter$Types$HideStartingPlayerCard = {ctor: 'HideStartingPlayerCard'};
 var _m_renaud$mtg_counter$Types$ShowStartingPlayer = function (a) {
 	return {ctor: 'ShowStartingPlayer', _0: a};
@@ -14701,6 +14706,20 @@ var _m_renaud$mtg_counter$State$update = F2(
 						{startingPlayer: _elm_lang$core$Maybe$Nothing}),
 					_elm_lang$core$Native_List.fromArray(
 						[]));
+			case 'ToggleChangeCardColorsSetting':
+				var oldGameSettings = model.gameSettings;
+				var newGameSettings = _elm_lang$core$Native_Utils.update(
+					oldGameSettings,
+					{
+						changeCardColors: _elm_lang$core$Basics$not(oldGameSettings.changeCardColors)
+					});
+				return A2(
+					_elm_lang$core$Platform_Cmd_ops['!'],
+					_elm_lang$core$Native_Utils.update(
+						model,
+						{gameSettings: newGameSettings}),
+					_elm_lang$core$Native_List.fromArray(
+						[]));
 			default:
 				return A2(_debois$elm_mdl$Material$update, _p4._0, model);
 		}
@@ -14711,7 +14730,7 @@ var _m_renaud$mtg_counter$State$init = function (initialStartingLife) {
 		player2: A2(_m_renaud$mtg_counter$Player$init, 'Player 2', initialStartingLife),
 		startingPlayer: _elm_lang$core$Maybe$Nothing,
 		confirmResetGame: false,
-		gameSettings: {startingLife: initialStartingLife},
+		gameSettings: {startingLife: initialStartingLife, changeCardColors: true},
 		mdl: _debois$elm_mdl$Material$model
 	};
 	return A2(
@@ -14722,6 +14741,7 @@ var _m_renaud$mtg_counter$State$init = function (initialStartingLife) {
 };
 
 var _m_renaud$mtg_counter$View$viewBodyGrid = function (model) {
+	var changeCardColors = model.gameSettings.changeCardColors;
 	var cellStyle = _elm_lang$core$Native_List.fromArray(
 		[
 			A2(_debois$elm_mdl$Material_Grid$size, _debois$elm_mdl$Material_Grid$Phone, 4),
@@ -14757,7 +14777,7 @@ var _m_renaud$mtg_counter$View$viewBodyGrid = function (model) {
 								A2(
 								_elm_lang$html$Html_App$map,
 								_m_renaud$mtg_counter$Types$Player1Msg,
-								A2(_m_renaud$mtg_counter$Player$view, '1', model.player1))
+								A3(_m_renaud$mtg_counter$Player$view, changeCardColors, '1', model.player1))
 							])),
 						A2(
 						_debois$elm_mdl$Material_Grid$cell,
@@ -14767,7 +14787,7 @@ var _m_renaud$mtg_counter$View$viewBodyGrid = function (model) {
 								A2(
 								_elm_lang$html$Html_App$map,
 								_m_renaud$mtg_counter$Types$Player2Msg,
-								A2(_m_renaud$mtg_counter$Player$view, '2', model.player2))
+								A3(_m_renaud$mtg_counter$Player$view, changeCardColors, '2', model.player2))
 							]))
 					]))
 			]));
@@ -14943,35 +14963,63 @@ var _m_renaud$mtg_counter$View$resetButton = function (model) {
 					[_debois$elm_mdl$Material_Icon$size24]))
 			]));
 };
-var _m_renaud$mtg_counter$View$drawer = _elm_lang$core$Native_List.fromArray(
-	[
-		A2(
-		_debois$elm_mdl$Material_Layout$title,
-		_elm_lang$core$Native_List.fromArray(
-			[]),
-		_elm_lang$core$Native_List.fromArray(
-			[
-				_elm_lang$html$Html$text('Game Options')
-			])),
-		A2(
-		_debois$elm_mdl$Material_Layout$navigation,
-		_elm_lang$core$Native_List.fromArray(
-			[]),
-		_elm_lang$core$Native_List.fromArray(
+var _m_renaud$mtg_counter$View$drawer = F2(
+	function (changeCardColors, mdlModel) {
+		return _elm_lang$core$Native_List.fromArray(
 			[
 				A2(
-				_debois$elm_mdl$Material_Layout$link,
+				_debois$elm_mdl$Material_Layout$title,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_debois$elm_mdl$Material_Layout$href('#'),
-						_debois$elm_mdl$Material_Layout$onClick(_m_renaud$mtg_counter$Types$SelectStartingPlayerClick)
+						_elm_lang$html$Html$text('Game Options')
+					])),
+				A2(
+				_debois$elm_mdl$Material_Layout$navigation,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						A2(
+						_debois$elm_mdl$Material_Layout$link,
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_debois$elm_mdl$Material_Layout$href('#'),
+								_debois$elm_mdl$Material_Layout$onClick(_m_renaud$mtg_counter$Types$SelectStartingPlayerClick)
+							]),
+						_elm_lang$core$Native_List.fromArray(
+							[
+								_elm_lang$html$Html$text('Randomly pick starting player')
+							]))
+					])),
+				A2(
+				_debois$elm_mdl$Material_Layout$title,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text('Settings')
+					])),
+				A5(
+				_debois$elm_mdl$Material_Toggles$switch,
+				_m_renaud$mtg_counter$Types$Mdl,
+				_elm_lang$core$Native_List.fromArray(
+					[0]),
+				mdlModel,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_debois$elm_mdl$Material_Toggles$onClick(_m_renaud$mtg_counter$Types$ToggleChangeCardColorsSetting),
+						_debois$elm_mdl$Material_Toggles$ripple,
+						_debois$elm_mdl$Material_Toggles$value(changeCardColors),
+						A2(_debois$elm_mdl$Material_Options$css, 'margin-left', '5px')
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html$text('Randomly pick starting player')
+						_elm_lang$html$Html$text('Color changing cards')
 					]))
-			]))
-	]);
+			]);
+	});
 var _m_renaud$mtg_counter$View$header = function (model) {
 	return _elm_lang$core$Native_List.fromArray(
 		[
@@ -15008,7 +15056,7 @@ var _m_renaud$mtg_counter$View$view = function (model) {
 			[_debois$elm_mdl$Material_Layout$fixedHeader]),
 		{
 			header: _m_renaud$mtg_counter$View$header(model),
-			drawer: _m_renaud$mtg_counter$View$drawer,
+			drawer: A2(_m_renaud$mtg_counter$View$drawer, model.gameSettings.changeCardColors, model.mdl),
 			tabs: {
 				ctor: '_Tuple2',
 				_0: _elm_lang$core$Native_List.fromArray(
