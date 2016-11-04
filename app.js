@@ -14973,7 +14973,7 @@ var _m_renaud$mtg_counter$View$drawer = F2(
 					[]),
 				_elm_lang$core$Native_List.fromArray(
 					[
-						_elm_lang$html$Html$text('Game Options')
+						_elm_lang$html$Html$text('Actions')
 					])),
 				A2(
 				_debois$elm_mdl$Material_Layout$navigation,
@@ -14990,7 +14990,7 @@ var _m_renaud$mtg_counter$View$drawer = F2(
 							]),
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html$text('Randomly pick starting player')
+								_elm_lang$html$Html$text('Randomly select starting player')
 							]))
 					])),
 				A2(
