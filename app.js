@@ -14859,6 +14859,7 @@ var _m_renaud$mtg_counter$View$startingPlayerCard = function (maybeStartingPlaye
 					_debois$elm_mdl$Material_Card$title,
 					_elm_lang$core$Native_List.fromArray(
 						[
+							_debois$elm_mdl$Material_Card$border,
 							A2(_debois$elm_mdl$Material_Options$css, 'display', 'flex'),
 							A2(_debois$elm_mdl$Material_Options$css, 'flex-direction', 'row'),
 							A2(_debois$elm_mdl$Material_Options$css, 'justify-content', 'space-between')
@@ -14982,7 +14983,7 @@ var _m_renaud$mtg_counter$View$resetButton = function (model) {
 		_elm_lang$core$Native_List.fromArray(
 			[
 				_debois$elm_mdl$Material_Button$onClick(_m_renaud$mtg_counter$Types$Reset),
-				_debois$elm_mdl$Material_Button$colored,
+				_debois$elm_mdl$Material_Button$accent,
 				A2(_debois$elm_mdl$Material_Options$css, 'width', '100%'),
 				A2(_debois$elm_mdl$Material_Options$css, 'margin', '0 auto'),
 				A2(_debois$elm_mdl$Material_Options$css, 'position', 'fixed'),
