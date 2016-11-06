@@ -1,4 +1,5 @@
-module Player exposing (Model, Msg(..), init, update, view, setLifeTotal)
+module Player exposing (Model, Msg(..), init, update, view, setLifeTotal,
+                        PersistentModel, fromPersistentModel, toPersistentModel)
 
 
 import Dom
@@ -44,6 +45,28 @@ init playerName initialLife =
 setLifeTotal : Int -> Model -> Model
 setLifeTotal life model =
     { model | lifeTotal = life }
+
+
+-- PERSISTENT MODEL
+
+
+type alias PersistentModel =
+    { name : PlayerName
+    , lifeTotal : Int
+    }
+
+
+fromPersistentModel : PersistentModel -> Model
+fromPersistentModel persistentModel =
+    init persistentModel.name persistentModel.lifeTotal
+
+
+toPersistentModel : Model -> PersistentModel
+toPersistentModel model =
+    { name = model.name
+    , lifeTotal = model.lifeTotal
+    }
+
 
 
 -- UPDATE

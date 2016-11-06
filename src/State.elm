@@ -2,17 +2,22 @@ module State exposing (init, update)
 
 import Material
 import Material.Layout as Layout
+import Maybe
 import Random
 
+
+import Persist exposing (PersistentModel, fromPersistentModel)
 import Types exposing (Model, Msg(..))
 
 import Player
 
 
-init : Int -> (Model, Cmd Msg)
-init initialStartingLife =
+init : Maybe PersistentModel -> (Model, Cmd Msg)
+init maybePersistentModel =
     let
-        model =
+        initialStartingLife =
+            20
+        defaultModel =
             { player1 = Player.init "Player 1" initialStartingLife
             , player2 = Player.init "Player 2" initialStartingLife
             , startingPlayer = Nothing
@@ -23,6 +28,9 @@ init initialStartingLife =
                   }
             , mdl = Material.model
             }
+        maybeModel = Maybe.map fromPersistentModel maybePersistentModel
+        model =
+            Maybe.withDefault defaultModel maybeModel
     in
         model ! []
 

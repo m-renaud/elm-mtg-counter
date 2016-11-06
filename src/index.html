@@ -23,8 +23,13 @@
 
 <body id="body">
   <script type="text/javascript">
+    var storedState = localStorage.getItem('elm-mtg-counter-save');
+    var startingState = storedState ? JSON.parse(storedState) : null;
     var node = document.getElementById('body');
-    var main = Elm.App.embed(node);
+    var main = Elm.App.embed(node, startingState);
+    main.ports.setStorage.subscribe(function(state) {
+      localStorage.setItem('elm-mtg-counter-save', JSON.stringify(state));
+    });
   </script>
 </body>
 </html>

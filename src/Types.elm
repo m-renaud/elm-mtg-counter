@@ -1,4 +1,4 @@
-module Types exposing (Model, Msg(..))
+module Types exposing (Model, Msg(..), Settings)
 
 import Material
 
