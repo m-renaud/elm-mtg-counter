@@ -14859,7 +14859,6 @@ var _m_renaud$mtg_counter$View$startingPlayerCard = function (maybeStartingPlaye
 					_debois$elm_mdl$Material_Card$title,
 					_elm_lang$core$Native_List.fromArray(
 						[
-							_debois$elm_mdl$Material_Card$border,
 							A2(_debois$elm_mdl$Material_Options$css, 'display', 'flex'),
 							A2(_debois$elm_mdl$Material_Options$css, 'flex-direction', 'row'),
 							A2(_debois$elm_mdl$Material_Options$css, 'justify-content', 'space-between')
@@ -15028,7 +15027,9 @@ var _m_renaud$mtg_counter$View$drawer = F2(
 						_elm_lang$core$Native_List.fromArray(
 							[
 								_debois$elm_mdl$Material_Icon$size24,
-								A2(_debois$elm_mdl$Material_Options$css, 'margin-right', '20px')
+								A2(_debois$elm_mdl$Material_Options$css, 'margin-right', '20px'),
+								A2(_debois$elm_mdl$Material_Options$css, 'position', 'relative'),
+								A2(_debois$elm_mdl$Material_Options$css, 'top', '5px')
 							])),
 						_elm_lang$html$Html$text('Pick starting player')
 					])),
