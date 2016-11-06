@@ -54,14 +54,14 @@ header model =
 drawer : Bool -> Material.Model -> List (Html Msg)
 drawer changeCardColors mdlModel =
     [ Layout.title [] [ text "Actions" ]
-    , Layout.navigation
-        []
-        [ Layout.link
-              [ Layout.href "#"
-              , Layout.onClick <| SelectStartingPlayerClick
-              ]
-              [ text "Randomly select starting player" ]
-        ]
+    , Options.span [ Options.attribute <| Html.Events.onClick SelectStartingPlayerClick
+                   , css "margin-left" "13px"
+                   , css "font-size" "16px"
+                   ]
+          [ Icon.view "casino" [ Icon.size24, css "margin-right" "20px"
+                               , css "position" "relative", css "top" "5px" ]
+          , text "Pick starting player"
+          ]
     , Layout.title [] [ text "Settings" ]
     , Toggles.switch Mdl [0] mdlModel
           [ Toggles.onClick ToggleChangeCardColorsSetting
