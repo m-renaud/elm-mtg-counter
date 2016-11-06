@@ -14365,6 +14365,9 @@ var _m_renaud$mtg_counter$Player$backgroundColorFromLifeTotal = F2(
 	function (changeCardColor, lifeTotal) {
 		return (_elm_lang$core$Basics$not(changeCardColor) || (_elm_lang$core$Native_Utils.cmp(lifeTotal, 15) > -1)) ? A2(_debois$elm_mdl$Material_Color$color, _debois$elm_mdl$Material_Color$Green, _debois$elm_mdl$Material_Color$S600) : ((_elm_lang$core$Native_Utils.cmp(lifeTotal, 10) > -1) ? A2(_debois$elm_mdl$Material_Color$color, _debois$elm_mdl$Material_Color$Yellow, _debois$elm_mdl$Material_Color$S800) : ((_elm_lang$core$Native_Utils.cmp(lifeTotal, 5) > -1) ? A2(_debois$elm_mdl$Material_Color$color, _debois$elm_mdl$Material_Color$Orange, _debois$elm_mdl$Material_Color$S800) : ((_elm_lang$core$Native_Utils.cmp(lifeTotal, 3) > -1) ? A2(_debois$elm_mdl$Material_Color$color, _debois$elm_mdl$Material_Color$Red, _debois$elm_mdl$Material_Color$S600) : ((_elm_lang$core$Native_Utils.cmp(lifeTotal, 0) > 0) ? A2(_debois$elm_mdl$Material_Color$color, _debois$elm_mdl$Material_Color$Red, _debois$elm_mdl$Material_Color$S900) : _debois$elm_mdl$Material_Color$black))));
 	});
+var _m_renaud$mtg_counter$Player$toPersistentModel = function (model) {
+	return {name: model.name, lifeTotal: model.lifeTotal};
+};
 var _m_renaud$mtg_counter$Player$setLifeTotal = F2(
 	function (life, model) {
 		return _elm_lang$core$Native_Utils.update(
@@ -14375,9 +14378,16 @@ var _m_renaud$mtg_counter$Player$init = F2(
 	function (playerName, initialLife) {
 		return {name: playerName, lifeTotal: initialLife, editingName: false, mdl: _debois$elm_mdl$Material$model};
 	});
+var _m_renaud$mtg_counter$Player$fromPersistentModel = function (persistentModel) {
+	return A2(_m_renaud$mtg_counter$Player$init, persistentModel.name, persistentModel.lifeTotal);
+};
 var _m_renaud$mtg_counter$Player$Model = F4(
 	function (a, b, c, d) {
 		return {name: a, lifeTotal: b, editingName: c, mdl: d};
+	});
+var _m_renaud$mtg_counter$Player$PersistentModel = F2(
+	function (a, b) {
+		return {name: a, lifeTotal: b};
 	});
 var _m_renaud$mtg_counter$Player$Mdl = function (a) {
 	return {ctor: 'Mdl', _0: a};
@@ -14580,6 +14590,28 @@ var _m_renaud$mtg_counter$Types$Player1Msg = function (a) {
 	return {ctor: 'Player1Msg', _0: a};
 };
 
+var _m_renaud$mtg_counter$Persist$toPersistentModel = function (model) {
+	return {
+		persistentPlayer1: _m_renaud$mtg_counter$Player$toPersistentModel(model.player1),
+		persistentPlayer2: _m_renaud$mtg_counter$Player$toPersistentModel(model.player2),
+		gameSettings: model.gameSettings
+	};
+};
+var _m_renaud$mtg_counter$Persist$fromPersistentModel = function (persistentModel) {
+	return {
+		player1: _m_renaud$mtg_counter$Player$fromPersistentModel(persistentModel.persistentPlayer1),
+		player2: _m_renaud$mtg_counter$Player$fromPersistentModel(persistentModel.persistentPlayer2),
+		startingPlayer: _elm_lang$core$Maybe$Nothing,
+		confirmResetGame: false,
+		gameSettings: persistentModel.gameSettings,
+		mdl: _debois$elm_mdl$Material$model
+	};
+};
+var _m_renaud$mtg_counter$Persist$PersistentModel = F3(
+	function (a, b, c) {
+		return {persistentPlayer1: a, persistentPlayer2: b, gameSettings: c};
+	});
+
 var _m_renaud$mtg_counter$State$msgBatch = F3(
 	function (updateFunc, msgs, model) {
 		var updateModelAndCmds = F2(
@@ -14724,8 +14756,10 @@ var _m_renaud$mtg_counter$State$update = F2(
 				return A2(_debois$elm_mdl$Material$update, _p4._0, model);
 		}
 	});
-var _m_renaud$mtg_counter$State$init = function (initialStartingLife) {
-	var model = {
+var _m_renaud$mtg_counter$State$init = function (maybePersistentModel) {
+	var maybeModel = A2(_elm_lang$core$Maybe$map, _m_renaud$mtg_counter$Persist$fromPersistentModel, maybePersistentModel);
+	var initialStartingLife = 20;
+	var defaultModel = {
 		player1: A2(_m_renaud$mtg_counter$Player$init, 'Player 1', initialStartingLife),
 		player2: A2(_m_renaud$mtg_counter$Player$init, 'Player 2', initialStartingLife),
 		startingPlayer: _elm_lang$core$Maybe$Nothing,
@@ -14733,6 +14767,7 @@ var _m_renaud$mtg_counter$State$init = function (initialStartingLife) {
 		gameSettings: {startingLife: initialStartingLife, changeCardColors: true},
 		mdl: _debois$elm_mdl$Material$model
 	};
+	var model = A2(_elm_lang$core$Maybe$withDefault, defaultModel, maybeModel);
 	return A2(
 		_elm_lang$core$Platform_Cmd_ops['!'],
 		model,
@@ -14990,7 +15025,15 @@ var _m_renaud$mtg_counter$View$drawer = F2(
 							]),
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_elm_lang$html$Html$text('Randomly select starting player')
+								A2(
+								_debois$elm_mdl$Material_Icon$view,
+								'casino',
+								_elm_lang$core$Native_List.fromArray(
+									[
+										_debois$elm_mdl$Material_Icon$size24,
+										A2(_debois$elm_mdl$Material_Options$css, 'margin-right', '5px')
+									])),
+								_elm_lang$html$Html$text('Pick starting player')
 							]))
 					])),
 				A2(
@@ -15088,14 +15131,107 @@ var _m_renaud$mtg_counter$View$view = function (model) {
 		});
 };
 
+var _m_renaud$mtg_counter$App$setStorage = _elm_lang$core$Native_Platform.outgoingPort(
+	'setStorage',
+	function (v) {
+		return {
+			persistentPlayer1: {name: v.persistentPlayer1.name, lifeTotal: v.persistentPlayer1.lifeTotal},
+			persistentPlayer2: {name: v.persistentPlayer2.name, lifeTotal: v.persistentPlayer2.lifeTotal},
+			gameSettings: {startingLife: v.gameSettings.startingLife, changeCardColors: v.gameSettings.changeCardColors}
+		};
+	});
+var _m_renaud$mtg_counter$App$updateWithStorage = F2(
+	function (msg, model) {
+		var _p0 = A2(_m_renaud$mtg_counter$State$update, msg, model);
+		var newModel = _p0._0;
+		var cmds = _p0._1;
+		return {
+			ctor: '_Tuple2',
+			_0: newModel,
+			_1: _elm_lang$core$Platform_Cmd$batch(
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_m_renaud$mtg_counter$App$setStorage(
+						_m_renaud$mtg_counter$Persist$toPersistentModel(newModel)),
+						cmds
+					]))
+		};
+	});
 var _m_renaud$mtg_counter$App$main = {
-	main: _elm_lang$html$Html_App$program(
+	main: _elm_lang$html$Html_App$programWithFlags(
 		{
-			init: _m_renaud$mtg_counter$State$init(20),
+			init: _m_renaud$mtg_counter$State$init,
 			view: _m_renaud$mtg_counter$View$view,
 			subscriptions: _elm_lang$core$Basics$always(_elm_lang$core$Platform_Sub$none),
-			update: _m_renaud$mtg_counter$State$update
-		})
+			update: _m_renaud$mtg_counter$App$updateWithStorage
+		}),
+	flags: _elm_lang$core$Json_Decode$oneOf(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$core$Json_Decode$null(_elm_lang$core$Maybe$Nothing),
+				A2(
+				_elm_lang$core$Json_Decode$map,
+				_elm_lang$core$Maybe$Just,
+				A2(
+					_elm_lang$core$Json_Decode$andThen,
+					A2(
+						_elm_lang$core$Json_Decode_ops[':='],
+						'gameSettings',
+						A2(
+							_elm_lang$core$Json_Decode$andThen,
+							A2(_elm_lang$core$Json_Decode_ops[':='], 'changeCardColors', _elm_lang$core$Json_Decode$bool),
+							function (changeCardColors) {
+								return A2(
+									_elm_lang$core$Json_Decode$andThen,
+									A2(_elm_lang$core$Json_Decode_ops[':='], 'startingLife', _elm_lang$core$Json_Decode$int),
+									function (startingLife) {
+										return _elm_lang$core$Json_Decode$succeed(
+											{changeCardColors: changeCardColors, startingLife: startingLife});
+									});
+							})),
+					function (gameSettings) {
+						return A2(
+							_elm_lang$core$Json_Decode$andThen,
+							A2(
+								_elm_lang$core$Json_Decode_ops[':='],
+								'persistentPlayer1',
+								A2(
+									_elm_lang$core$Json_Decode$andThen,
+									A2(_elm_lang$core$Json_Decode_ops[':='], 'lifeTotal', _elm_lang$core$Json_Decode$int),
+									function (lifeTotal) {
+										return A2(
+											_elm_lang$core$Json_Decode$andThen,
+											A2(_elm_lang$core$Json_Decode_ops[':='], 'name', _elm_lang$core$Json_Decode$string),
+											function (name) {
+												return _elm_lang$core$Json_Decode$succeed(
+													{lifeTotal: lifeTotal, name: name});
+											});
+									})),
+							function (persistentPlayer1) {
+								return A2(
+									_elm_lang$core$Json_Decode$andThen,
+									A2(
+										_elm_lang$core$Json_Decode_ops[':='],
+										'persistentPlayer2',
+										A2(
+											_elm_lang$core$Json_Decode$andThen,
+											A2(_elm_lang$core$Json_Decode_ops[':='], 'lifeTotal', _elm_lang$core$Json_Decode$int),
+											function (lifeTotal) {
+												return A2(
+													_elm_lang$core$Json_Decode$andThen,
+													A2(_elm_lang$core$Json_Decode_ops[':='], 'name', _elm_lang$core$Json_Decode$string),
+													function (name) {
+														return _elm_lang$core$Json_Decode$succeed(
+															{lifeTotal: lifeTotal, name: name});
+													});
+											})),
+									function (persistentPlayer2) {
+										return _elm_lang$core$Json_Decode$succeed(
+											{gameSettings: gameSettings, persistentPlayer1: persistentPlayer1, persistentPlayer2: persistentPlayer2});
+									});
+							});
+					}))
+			]))
 };
 
 var Elm = {};
