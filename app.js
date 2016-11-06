@@ -14859,6 +14859,7 @@ var _m_renaud$mtg_counter$View$startingPlayerCard = function (maybeStartingPlaye
 					_debois$elm_mdl$Material_Card$title,
 					_elm_lang$core$Native_List.fromArray(
 						[
+							_debois$elm_mdl$Material_Card$border,
 							A2(_debois$elm_mdl$Material_Options$css, 'display', 'flex'),
 							A2(_debois$elm_mdl$Material_Options$css, 'flex-direction', 'row'),
 							A2(_debois$elm_mdl$Material_Options$css, 'justify-content', 'space-between')
@@ -15011,30 +15012,25 @@ var _m_renaud$mtg_counter$View$drawer = F2(
 						_elm_lang$html$Html$text('Actions')
 					])),
 				A2(
-				_debois$elm_mdl$Material_Layout$navigation,
+				_debois$elm_mdl$Material_Options$span,
 				_elm_lang$core$Native_List.fromArray(
-					[]),
+					[
+						_debois$elm_mdl$Material_Options$attribute(
+						_elm_lang$html$Html_Events$onClick(_m_renaud$mtg_counter$Types$SelectStartingPlayerClick)),
+						A2(_debois$elm_mdl$Material_Options$css, 'margin-left', '13px'),
+						A2(_debois$elm_mdl$Material_Options$css, 'font-size', '16px')
+					]),
 				_elm_lang$core$Native_List.fromArray(
 					[
 						A2(
-						_debois$elm_mdl$Material_Layout$link,
+						_debois$elm_mdl$Material_Icon$view,
+						'casino',
 						_elm_lang$core$Native_List.fromArray(
 							[
-								_debois$elm_mdl$Material_Layout$href('#'),
-								_debois$elm_mdl$Material_Layout$onClick(_m_renaud$mtg_counter$Types$SelectStartingPlayerClick)
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[
-								A2(
-								_debois$elm_mdl$Material_Icon$view,
-								'casino',
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_debois$elm_mdl$Material_Icon$size24,
-										A2(_debois$elm_mdl$Material_Options$css, 'margin-right', '5px')
-									])),
-								_elm_lang$html$Html$text('Pick starting player')
-							]))
+								_debois$elm_mdl$Material_Icon$size24,
+								A2(_debois$elm_mdl$Material_Options$css, 'margin-right', '20px')
+							])),
+						_elm_lang$html$Html$text('Pick starting player')
 					])),
 				A2(
 				_debois$elm_mdl$Material_Layout$title,
