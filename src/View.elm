@@ -77,7 +77,7 @@ resetButton : Model -> Html Msg
 resetButton model =
     Button.render Mdl [2] model.mdl
         [ Button.onClick Reset
-        , Button.colored
+        , Button.accent
         , css "width" "100%"
         , css "margin" "0 auto"
         , css "position" "fixed"
