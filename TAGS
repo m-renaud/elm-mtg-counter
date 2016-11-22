@@ -1,0 +1,83 @@
+
+src/App.elm,74
+main =main12,264
+updateWithStorage msg model =updateWithStorage25,536
+
+src/Persist.elm,232
+module PersistPersist1,0
+type alias PersistentModel =type9,156
+type alias PersistentModelPersistentModel9,156
+fromPersistentModel persistentModel =fromPersistentModel17,368
+toPersistentModel model =toPersistentModel28,752
+
+src/Types.elm,665
+module TypesTypes1,0
+type alias Model =type8,83
+type alias ModelModel8,83
+type alias Settings =type18,291
+type alias SettingsSettings18,291
+type MsgMsg25,377
+    = Player1MsgPlayer1Msg27,428
+    | Player2MsgPlayer2Msg28,456
+    | ResetReset31,542
+    | ConfirmResetConfirmReset32,554
+    | CancelResetCancelReset33,573
+    | SelectStartingPlayerClickSelectStartingPlayerClick36,652
+    | SelectStartingPlayerSelectStartingPlayer37,684
+    | ShowStartingPlayerShowStartingPlayer38,711
+    | HideStartingPlayerCardHideStartingPlayerCard39,740
+    | ToggleChangeCardColorsSettingToggleChangeCardColorsSetting42,792
+    | MdlMdl45,853
+
+src/Player.elm,1394
+module PlayerPlayer1,0
+type alias PlayerName =type26,627
+type alias PlayerNamePlayerName26,627
+type alias Model =type29,660
+type alias ModelModel29,660
+init playerName initialLife =init38,819
+setLifeTotal life model =setLifeTotal47,1001
+type alias PersistentModel =type54,1084
+type alias PersistentModelPersistentModel54,1084
+fromPersistentModel persistentModel =fromPersistentModel61,1214
+toPersistentModel model =toPersistentModel66,1355
+type alias DomIdPiece =type76,1460
+type alias DomIdPieceDomIdPiece76,1460
+type MsgMsg80,1494
+    = NoOpNoOp81,1503
+    | IncreaseLifeIncreaseLife82,1514
+    | DecreaseLifeDecreaseLife83,1533
+    | EditingNameEditingName84,1552
+    | UpdateNameUpdateName85,1586
+    | MdlMdl86,1614
+update msg model =update90,1687
+backgroundColorFromLifeTotal changeCardColor lifeTotal =backgroundColorFromLifeTotal128,2736
+-- Text color is white when life > 0, and red when <=--143,3218
+textColorFromLifeTotal changeCardColor lifeTotal =textColorFromLifeTotal145,3327
+cardStyle backgroundColor =cardStyle154,3577
+cardTitle playerName domIdSuffix startingPlayerName mdlModel =cardTitle163,3809
+cardText changeCardColor lifeTotal =cardText197,5044
+cardActions mdlModel =cardActions208,5328
+view changeCardColor domIdSuffix startingPlayer model =view229,5856
+onEnter msg =onEnter245,6231
+is13 code =is13250,6370
+
+src/View.elm,515
+module ViewView1,0
+view model =view22,510
+header model =header44,1232
+drawer changeCardColors mdlModel =drawer55,1466
+resetButton model =resetButton77,2281
+floatingCardStyle msg =floatingCardStyle94,2737
+floatingCardTitle titleText =floatingCardTitle108,3052
+floatingCardActions actions =floatingCardActions121,3441
+resetCard mdlModel =resetCard129,3601
+startingPlayerCard maybeStartingPlayer =startingPlayerCard156,4475
+cellStyle =cellStyle184,5407
+viewBodyGrid model =viewBodyGrid195,5640
+
+src/State.elm,148
+module StateState1,0
+init maybePersistentModel =init16,284
+update msg model =update40,1010
+msgBatch updateFunc msgs model =msgBatch132,3694
