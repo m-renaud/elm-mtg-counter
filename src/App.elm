@@ -1,16 +1,15 @@
 port module App exposing (main, setStorage)
 
-import Html.App
-
+import Html
 import Persist exposing (PersistentModel, toPersistentModel)
 import State exposing (init, update)
 import Types exposing (Msg, Model)
 import View exposing (view)
 
 
-main : Program (Maybe PersistentModel)
+main : Program (Maybe PersistentModel) Model Msg
 main =
-    Html.App.programWithFlags
+    Html.programWithFlags
         { init = init
         , view = view
         , subscriptions = always Sub.none
@@ -21,12 +20,11 @@ main =
 port setStorage : PersistentModel -> Cmd msg
 
 
-updateWithStorage : Msg -> Model -> (Model, Cmd Msg)
+updateWithStorage : Msg -> Model -> ( Model, Cmd Msg )
 updateWithStorage msg model =
     let
-        (newModel, cmds) =
+        ( newModel, cmds ) =
             update msg model
-
     in
         ( newModel
         , Cmd.batch [ setStorage (toPersistentModel newModel), cmds ]

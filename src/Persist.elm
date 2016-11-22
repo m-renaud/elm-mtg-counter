@@ -1,7 +1,6 @@
 module Persist exposing (PersistentModel, fromPersistentModel, toPersistentModel)
 
 import Material
-
 import Player
 import Types exposing (Model, Settings)
 

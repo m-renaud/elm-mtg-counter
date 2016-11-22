@@ -1,6 +1,15 @@
-module Player exposing (Model, Msg(..), init, update, view, setLifeTotal,
-                        PersistentModel, fromPersistentModel, toPersistentModel)
-
+module Player
+    exposing
+        ( Model
+        , Msg(..)
+        , init
+        , update
+        , view
+        , setLifeTotal
+        , PersistentModel
+        , fromPersistentModel
+        , toPersistentModel
+        )
 
 import Dom
 import Json.Decode as Json
@@ -8,7 +17,6 @@ import Html exposing (..)
 import Html.Attributes as Attributes
 import Html.Events as Events
 import Task
-
 import Material
 import Material.Button as Button
 import Material.Card as Card
@@ -22,7 +30,8 @@ import Material.Typography as Typography
 -- MODEL
 
 
-type alias PlayerName = String
+type alias PlayerName =
+    String
 
 
 type alias Model =
@@ -45,6 +54,7 @@ init playerName initialLife =
 setLifeTotal : Int -> Model -> Model
 setLifeTotal life model =
     { model | lifeTotal = life }
+
 
 
 -- PERSISTENT MODEL
@@ -72,8 +82,8 @@ toPersistentModel model =
 -- UPDATE
 
 
-type alias DomIdPiece = String
-
+type alias DomIdPiece =
+    String
 
 
 type Msg
@@ -85,7 +95,7 @@ type Msg
     | Mdl (Material.Msg Msg)
 
 
-update : Msg -> Model -> (Model, Cmd Msg)
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         NoOp ->
@@ -100,16 +110,13 @@ update msg model =
         EditingName domIdSuffix isEditingName ->
             let
                 focus =
-                    if
-                        isEditingName
-                    then
+                    if isEditingName then
                         Dom.focus ("player-name-" ++ domIdSuffix)
                     else
                         Dom.blur ("player-name-" ++ domIdSuffix)
-
             in
                 { model | editingName = isEditingName }
-                    ! [ Task.perform (\_ -> NoOp) (\_ -> NoOp) focus ]
+                    ! [ Task.attempt (always NoOp) focus ]
 
         UpdateName newName ->
             { model | name = newName } ! []
@@ -118,11 +125,12 @@ update msg model =
             Material.update mdlMsg model
 
 
+
 -- VIEW
-
-
 -- Background color goes from green->orange->red->black as life decreases.
 -- Stays green if changeCardColor is False.
+
+
 backgroundColorFromLifeTotal : Bool -> Int -> Color.Color
 backgroundColorFromLifeTotal changeCardColor lifeTotal =
     if (not changeCardColor) || lifeTotal >= 15 then
@@ -139,7 +147,10 @@ backgroundColorFromLifeTotal changeCardColor lifeTotal =
         Color.black
 
 
+
 -- Text color is white when life > 0, and red when <= 0.
+
+
 textColorFromLifeTotal : Bool -> Int -> Color.Color
 textColorFromLifeTotal changeCardColor lifeTotal =
     if (not changeCardColor) || lifeTotal > 0 then
@@ -148,7 +159,10 @@ textColorFromLifeTotal changeCardColor lifeTotal =
         Color.color Color.Red Color.S600
 
 
+
 -- The style for a player card.
+
+
 cardStyle : Color.Color -> List (Style Msg)
 cardStyle backgroundColor =
     [ Color.background backgroundColor
@@ -168,18 +182,20 @@ cardTitle playerName domIdSuffix mdlModel =
         , css "padding-top" "0"
         , css "padding-bottom" "0"
         ]
-
-        [ Textfield.render Mdl [3] mdlModel
-              [ Textfield.label "PlayerName"
-              , Textfield.value playerName
-              , Textfield.style [ css "font-size" "24px"
-                                , css "border-bottom" "0px"
-                                , Options.attribute <| Attributes.id ("player-name-" ++ domIdSuffix)
-                                ]
-              , Textfield.onInput UpdateName
-              , Textfield.onBlur <| EditingName domIdSuffix False
-              , onEnter <| EditingName domIdSuffix False
-              ]
+        [ Textfield.render Mdl
+            [ 3 ]
+            mdlModel
+            [ Textfield.label "PlayerName"
+            , Textfield.value playerName
+            , Textfield.style
+                [ css "font-size" "24px"
+                , css "border-bottom" "0px"
+                , Options.attribute <| Attributes.id ("player-name-" ++ domIdSuffix)
+                ]
+            , Textfield.onInput UpdateName
+            , Textfield.onBlur <| EditingName domIdSuffix False
+            , onEnter <| EditingName domIdSuffix False
+            ]
         ]
 
 
@@ -190,7 +206,6 @@ cardText changeCardColor lifeTotal =
         , css "font-size" "60px"
         , Color.text <| textColorFromLifeTotal changeCardColor lifeTotal
         ]
-
         [ text <| toString lifeTotal ]
 
 
@@ -201,17 +216,20 @@ cardActions mdlModel =
         , css "padding-left" "8px"
         , css "padding-top" "4px"
         ]
-
-        [ Button.render Mdl [1] mdlModel
-              [ Button.onClick DecreaseLife
-              , Button.fab
-              ]
-              [ text "-" ]
-        , Button.render Mdl [0] mdlModel
-              [ Button.onClick IncreaseLife
-              , Button.fab
-              ]
-              [ text "+" ]
+        [ Button.render Mdl
+            [ 1 ]
+            mdlModel
+            [ Button.onClick DecreaseLife
+            , Button.fab
+            ]
+            [ text "-" ]
+        , Button.render Mdl
+            [ 0 ]
+            mdlModel
+            [ Button.onClick IncreaseLife
+            , Button.fab
+            ]
+            [ text "+" ]
         ]
 
 
@@ -229,17 +247,24 @@ view changeCardColor domIdSuffix model =
 -- Utilities
 
 
-
-
 onEnter : Msg -> Textfield.Property Msg
 onEnter msg =
-    Textfield.on "keydown" (Json.map (always msg) (Json.customDecoder Events.keyCode is13))
+    Textfield.on "keydown" (Json.map (always msg) (customDecoder Events.keyCode is13))
+
+
+customDecoder decoder toResult =
+    Json.andThen
+        (\a ->
+             case toResult a of
+                 Ok b -> Json.succeed b
+                 Err err -> Json.fail err
+        )
+        decoder
 
 
 is13 : Int -> Result String ()
 is13 code =
     if code == 13 then
         Ok ()
-
     else
         Err "not the right key code"

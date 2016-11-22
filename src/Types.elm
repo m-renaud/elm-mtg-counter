@@ -1,7 +1,6 @@
 module Types exposing (Model, Msg(..), Settings)
 
 import Material
-
 import Player
 
 
@@ -21,25 +20,21 @@ type alias Settings =
     }
 
 
-
-type Msg
+type
+    Msg
     -- Player card subcomponent messages.
     = Player1Msg Player.Msg
     | Player2Msg Player.Msg
-
-    -- Reset the game state (player1 and player2 models)
+      -- Reset the game state (player1 and player2 models)
     | Reset
     | ConfirmReset
     | CancelReset
-
-    -- Messages for randomly selecting the starting player.
+      -- Messages for randomly selecting the starting player.
     | SelectStartingPlayerClick
     | SelectStartingPlayer
     | ShowStartingPlayer Int
     | HideStartingPlayerCard
-
-    -- Game settings.
+      -- Game settings.
     | ToggleChangeCardColorsSetting
-
-    -- Elm MDL message.
+      -- Elm MDL message.
     | Mdl (Material.Msg Msg)
